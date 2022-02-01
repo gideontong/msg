@@ -2,9 +2,11 @@ from collections import Counter
 from datetime import timedelta
 from humanize import naturaldelta
 from json import load
+from sys import argv
 from os import listdir
 
-NAME = 'Gideon Tong'
+
+NAME = argv[1]
 folders = [
     'archived_threads',
     'filtered_threads',
@@ -92,6 +94,7 @@ for person in messages:
         last_person = sender
     
     stats[person] = {
+        'count': len(interactions),
         'first': interactions[0]['sender_name'],
         'started': {
             'me': started_by_me,
@@ -110,6 +113,8 @@ person = input('Pick a person> ')
 
 data = stats[person]
 print(f'Now showing stats for you and: {person}')
+
+print(f'Exchanged messages: {data["count"]}')
 
 if person == data['first']:
     print(f'{person} slid into your DMs. I guess you are cool?')
