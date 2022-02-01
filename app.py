@@ -36,7 +36,7 @@ message_types = Counter(message_types)
 senders = Counter(senders)
 
 print(message_types)
-top_senders = [group[0] for group in senders.most_common(20)][1:]
+top_senders = [group[0] for group in senders.most_common(50)][1:]
 
 messages = dict()
 for file in files:
@@ -104,36 +104,39 @@ for person in messages:
         }
     }
 
-for person in stats:
-    data = stats[person]
-    print(f'Now showing stats for you and: {person}')
-    
-    if person == data['first']:
-        print(f'{person} slid into your DMs. I guess you are cool?')
-    else:
-        print(f'You slid into their DMs. As usual.')
-    
-    if data['started']['me'] > data['started']['you']:
-        print('You start most of the conversations. Of course you do.')
-    elif data['started']['you'] > data['started']['me']:
-        print(f'{person} starts more conversations with you. Keep replying I guess?')
+print(stats.keys())
 
-    times = data['times']['total']
-    avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
-    print(f'On average, it takes {avg_time} for anyone to get a reply here.')
+person = input('Pick a person> ')
 
-    times = data['times']['me']
-    min_time = naturaldelta(timedelta(milliseconds=min(times)), minimum_unit="microseconds")
-    max_time = naturaldelta(timedelta(milliseconds=max(times)), minimum_unit="microseconds")
-    avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
-    print(f'My fastest reply to {person} was {min_time}')
-    print(f'My slowest reply to them was {max_time}')
-    print(f'On average, it takes me {avg_time} to reply to them')
-    
-    times = data['times']['you']
-    min_time = naturaldelta(timedelta(milliseconds=min(times)), minimum_unit="microseconds")
-    max_time = naturaldelta(timedelta(milliseconds=max(times)), minimum_unit="microseconds")
-    avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
-    print(f'{person}\'s fastest reply to me only took {min_time}')
-    print(f'However, one time they took {max_time} to reply to me')
-    print(f'Yet on average, it takes them {avg_time} to reply\n')
+data = stats[person]
+print(f'Now showing stats for you and: {person}')
+
+if person == data['first']:
+    print(f'{person} slid into your DMs. I guess you are cool?')
+else:
+    print(f'You slid into their DMs. As usual.')
+
+if data['started']['me'] > data['started']['you']:
+    print('You start most of the conversations. Of course you do.')
+elif data['started']['you'] > data['started']['me']:
+    print(f'{person} starts more conversations with you. Keep replying I guess?')
+
+times = data['times']['total']
+avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
+print(f'On average, it takes {avg_time} for anyone to get a reply here.')
+
+times = data['times']['me']
+min_time = naturaldelta(timedelta(milliseconds=min(times)), minimum_unit="microseconds")
+max_time = naturaldelta(timedelta(milliseconds=max(times)), minimum_unit="microseconds")
+avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
+print(f'My fastest reply to {person} was {min_time}')
+print(f'My slowest reply to them was {max_time}')
+print(f'On average, it takes me {avg_time} to reply to them')
+
+times = data['times']['you']
+min_time = naturaldelta(timedelta(milliseconds=min(times)), minimum_unit="microseconds")
+max_time = naturaldelta(timedelta(milliseconds=max(times)), minimum_unit="microseconds")
+avg_time = naturaldelta(timedelta(milliseconds=sum(times) / len(times)), minimum_unit="microseconds")
+print(f'{person}\'s fastest reply to me only took {min_time}')
+print(f'However, one time they took {max_time} to reply to me')
+print(f'Yet on average, it takes them {avg_time} to reply\n')
